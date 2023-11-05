@@ -148,7 +148,7 @@
 }
 
 .cart .item .item-image{
-  width: 30%;
+  width: 95px;
   height: 95px;
   border-radius: 100%;
   position: relative;
@@ -156,7 +156,7 @@
 
 .cart .item .item-image img{
   position: absolute;
-  top: -40px;
+  top: -30px;
   left: -10px;
   width: 135%;
 }
