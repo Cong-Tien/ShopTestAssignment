@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import data from "./data/shoes.json";
+import productAPI from "./api/product";
 
 function App() {
   const [count, setCount] = useState(1);
   const [total, setTotal] = useState(0);
-  const [listShoe, setListShoe] = useState(data.shoes);
   const [add, setAdd] = useState("ADD TO CART");
+  const [listProduct, setListProduct] = useState([]);
   const [arrCart, setArrCart] = useState([]);
 
   function calculateTotal(cart) {
@@ -17,6 +17,9 @@ function App() {
   }
 
   useEffect(() => {
+    productAPI.getProductList().then((result) => {
+      setListProduct(result.data)
+    }).catch(err => console.log(err))
     const arrCartStore = JSON.parse(localStorage.getItem("arrCart"));
     arrCartStore && setArrCart(arrCartStore);
   }, []);
@@ -24,13 +27,13 @@ function App() {
   useEffect(() => {
     const total = calculateTotal(arrCart);
     setTotal(total);
-    const checked = data.shoes.map((item) => {
+    const checked = listProduct.map((item) => {
       if (arrCart.map((item) => item.id).includes(item.id)) {
         return { ...item, checked: true };
       }
       return { ...item, checked: false };
     });
-    setListShoe(checked);
+    setListProduct(checked);
     return localStorage.setItem("arrCart", JSON.stringify(arrCart));
   }, [arrCart, count]);
 
@@ -74,7 +77,7 @@ function App() {
               <img src="./img/nike.png" alt="..." />
               <p>Our Product</p>
               <div className="list-item">
-                {listShoe?.map((item, index) => {
+                {listProduct?.map((item, index) => {
                   return (
                     <div className="item">
                       <div
